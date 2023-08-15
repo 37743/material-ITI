@@ -4,7 +4,7 @@ import streamlit as st
 
 
 #loading the model
-loaded_model = pickle.load(open('ML model as api/trained_model.sav', 'rb'))
+loaded_model = pickle.load(open('/Users/ayaabdelsamad/Desktop/ML model as api/trained_model.sav', 'rb'))
 
 
 #prediction function
@@ -26,13 +26,32 @@ def main():
     st.title('Insurance Claim Prediction')
     
     #taking input from user
-    Income = st.text_input('Yearly income (Numeric Value)')
+    Income = st.text_input('Yearly income (Numeric Value: 0:(0-23K) , 1:(23-109k), 2:(109-194k), 3:(194-279k), 4:(279-364k), 5:(364-450k), 6:(>4]50k))')
     application_underwriting_score = st.text_input('Application underwriting score (Numeric Value)')
     no_of_premiums_paid = st.text_input('Number of premiums paid (Numeric Value)')
-    sourcing_channel = st.text_input('Sourcing channel (Numeric Value)')
-    residence_area_type = st.text_input('Residence area type (Numeric Value)')
-    age = st.text_input('User age (Numeric Value)')
+    sourcing_channel = st.selectbox('Sourcing channel', ("--", "A", "B", "C", "D", "E"))
+    residence_area_type = st.selectbox('Residence area type', ("--", "Rural", "Urban"))
+    age = st.text_input('User age in days(Numeric Value:  0(:0-37), 1:(38-53), 2:(54-70), 3:(71-86), 4:(>86))')
     late_premium = st.text_input('Late premium (Numeric Value)')
+    
+    
+    #converting data required to make the prediction 
+    if sourcing_channel == "A":
+        sourcing_channel = 0
+    elif sourcing_channel == "B":
+        sourcing_channel = 1
+    elif sourcing_channel == "C":
+        sourcing_channel = 2
+    elif sourcing_channel == "D":
+        sourcing_channel = 3
+    elif sourcing_channel == "E":
+        sourcing_channel = 4
+    
+    if residence_area_type == "Rural":
+        residence_area_type = 0
+    elif residence_area_type == "Urban":
+        residence_area_type = 1
+    
     
     #output prediction
     output = ''
@@ -41,7 +60,15 @@ def main():
     if st.button('Predict claim'):
         
         #check if input is numeric value
-        ##
+        lst = [Income, application_underwriting_score, no_of_premiums_paid, sourcing_channel, residence_area_type, age, late_premium]
+        numeric_value = 0
+        for item in lst:
+            if item.isnumeric():
+                continue
+            else:
+                st.write("Item does not contain a numeric value.")
+                break
+        
         
         output = claim_prediction([Income, application_underwriting_score, no_of_premiums_paid, sourcing_channel, residence_area_type, age, late_premium])
     
