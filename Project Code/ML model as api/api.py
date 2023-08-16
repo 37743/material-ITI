@@ -35,7 +35,7 @@ def main():
     age = st.selectbox('6\. User Age in Years - (Numeric Value: 0:(0-37), 1:(38-53), 2:(54-70), 3:(71-86), 4:(>86))',\
                         ("--","0", "1", "2", "3", "4"), key="5")
     late_premium = st.text_input('7\. Late Premium - (Numeric Value)', key="6")
-    
+
     #converting data required to make the prediction
     match sourcing_channel:
         case "A":
@@ -49,6 +49,8 @@ def main():
         case "E":
             sourcing_channel = 4
     
+    if income == "--":
+        income = 0
     if residence_area_type == "Rural":
         residence_area_type = 0
     elif residence_area_type == "Urban":
@@ -58,12 +60,9 @@ def main():
     #output prediction
     output = ''
     output_check = True
-    nums = ["0","1","2","3","4","5","6","7","8","9"]
-
     def clear_text():
         for i in ["1","2","6"]: #not select boxes
-            for char in st.session_state[str(i)]:
-                if not (char in nums):
+            if not st.session_state[str(i)].isnumeric():
                     st.session_state[str(i)] = ""
         if not (st.session_state["1"] == ""):
             if int(st.session_state["1"]) > 100: # Percentages should NOT go over 100 
