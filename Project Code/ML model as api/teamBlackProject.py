@@ -159,7 +159,7 @@ print(train_data['Income'].median())
 
 # In[18]:
 
-
+plt.figure(2)
 plt.hist(train_data['Income'])
 plt.show()
 
@@ -684,22 +684,22 @@ pred_values.sort_values(by='Score', ascending=False)
 
 
 # In[75]:
-
+plt.figure(3)
 
 colors = sns.color_palette('pastel')[0:7]
 plt.pie(pred_values['Score'], labels = pred_values['Model'], colors = colors, autopct='%.0f%%')
 plt.title('Supervised Machine Learning Model Accuracy Pie Plot')
 plt.legend(title="Machine Learning Model", loc="center left", bbox_to_anchor=(1.25, 0, 0.5, 1))
-plt.show()
+plt.savefig("pie.png")
 
 
 # In[79]:
-
+plt.figure(4)
 
 model_names = ["KNN","LR","RF","NV","P","SGD","DT"]
 plt.bar(x=model_names, height = pred_values['Score']-90, bottom = 90)
 plt.title('Supervised Machine Learning Model Accuracy Bar Plot')
-plt.show()
+plt.savefig("bar.png")
 
 
 # In[80]:
